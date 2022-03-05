@@ -23,6 +23,26 @@
             }
         },
         {
+            "name": "win_msvc_vs",
+            "hidden": true,
+            "generator": "Visual Studio 17 2022",
+            "toolset": {
+                "value": "host=x64",
+                "strategy": "set"
+            },
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/${presetName}/install"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": [
+                        "Windows"
+                    ]
+                }
+            }
+        },
+        {
             "name": "linux_ninja_x64",
             "hidden": true,
             "generator": "Ninja",
@@ -85,6 +105,30 @@
             "architecture": {
                 "value": "ARM64",
                 "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "xbox-scarlett-debug",
+            "displayName": "Xbox Scarlett - Debug",
+            "inherits": "win_msvc_vs",
+            "architecture": {
+                "value": "Gaming.Xbox.Scarlett.x64",
+                "strategy": "set"
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "xbox-scarlett-release",
+            "displayName": "Xbox Scarlett - Release",
+            "inherits": "win_msvc_vs",
+            "architecture": {
+                "value": "Gaming.Xbox.Scarlett.x64",
+                "strategy": "set"
             },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
