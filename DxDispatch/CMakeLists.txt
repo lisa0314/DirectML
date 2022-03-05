@@ -246,3 +246,14 @@ if(DXD_TESTS)
     add_test(test_owned_by_dml dxdispatch ${CMAKE_CURRENT_SOURCE_DIR}/models/owned_by_dml.json)
     set_tests_properties(test_owned_by_dml PROPERTIES PASS_REGULAR_EXPRESSION "Resource 'Out': 6, 10, -2")
 endif()
+
+# ==============================================================================
+# Packaging
+# ==============================================================================
+if(PROJECT_IS_TOP_LEVEL)
+    set(CPACK_PACKAGE_NAME ${CMAKE_PROJECT_NAME})
+    set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+    set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+    set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+    include(CPack)
+endif()
