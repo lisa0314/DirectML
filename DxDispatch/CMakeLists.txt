@@ -144,6 +144,11 @@ if(TARGET_XBOX)
     # Deploy to the console instead of running on local machine.
     set_property(TARGET dxdispatch PROPERTY VS_SOLUTION_DEPLOY ON)
 
+    # This property is set on the gdk target, which dxdispatch links with, but it doesn't 
+    # get inherited automatically.
+    get_property(gdk_edition TARGET gdk PROPERTY VS_GLOBAL_XdkEditionTarget)
+    set_property(TARGET dxdispatch PROPERTY VS_GLOBAL_XdkEditionTarget ${gdk_edition})
+
     # No need for logos/assets; this is a developer-only app.
     target_sources(dxdispatch PRIVATE ${CMAKE_BINARY_DIR}/MicrosoftGame.config )
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/dxdispatch/dxdispatch.config.in MicrosoftGame.config)
