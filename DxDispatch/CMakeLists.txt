@@ -38,19 +38,6 @@ include(cmake/gdk.cmake)
 add_gdk_target(gdk CACHE_PREFIX DXD)
 get_target_property(gdk_dxcompiler_path gdk DX_COMPILER_PATH)
 
-# Hacky way to ensure property is set on any future targets.
-get_target_property(gdk_edition gdk VS_GLOBAL_XdkEditionTarget)
-if(gdk_edition)
-    function(add_library target_name)
-        _add_library(${ARGV})
-        set_property(TARGET ${target_name} PROPERTY VS_GLOBAL_XdkEditionTarget ${gdk_edition})
-    endfunction()
-    function(add_executable target_name)
-        _add_executable(${ARGV})
-        set_property(TARGET ${target_name} PROPERTY VS_GLOBAL_XdkEditionTarget ${gdk_edition})
-    endfunction()
-endif()
-
 include(cmake/pix.cmake)
 add_pix_target(pix CACHE_PREFIX DXD)
 

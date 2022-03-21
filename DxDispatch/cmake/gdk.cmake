@@ -65,6 +65,20 @@ function(init_gdk_target_system target_name edition)
     set_property(TARGET ${target_name} PROPERTY VS_GLOBAL_XdkEditionTarget "${edition}")
     set_property(TARGET ${target_name} PROPERTY DX_COMPONENT_CONFIG "System (${edition})")
     set_property(TARGET ${target_name} PROPERTY DX_COMPILER_PATH "${dxcompiler_path}")
+
+    # Hacky way to ensure property is set on any future targets. Probably better to apply 
+    # the GDK in a toolchain file.
+    get_target_property(gdk_edition gdk VS_GLOBAL_XdkEditionTarget)
+    set(msbuild_template [[
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <XdkEditionTarget>@edition@</XdkEditionTarget>
+    </PropertyGroup>
+</Project>
+]])
+    file(CONFIGURE OUTPUT ${CMAKE_BINARY_DIR}/Directory.Build.props CONTENT ${msbuild_template} @ONLY)
+
 endfunction()
 
 # -----------------------------------------------------------------------------
