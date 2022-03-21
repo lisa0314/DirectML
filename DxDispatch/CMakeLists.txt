@@ -38,6 +38,19 @@ include(cmake/gdk.cmake)
 add_gdk_target(gdk CACHE_PREFIX DXD)
 get_target_property(gdk_dxcompiler_path gdk DX_COMPILER_PATH)
 
+# Hacky way to ensure property is set on any future targets.
+get_target_property(gdk_edition gdk VS_GLOBAL_XdkEditionTarget)
+if(gdk_edition)
+    function(add_library target_name)
+        _add_library(${ARGV})
+        set_property(TARGET ${target_name} PROPERTY VS_GLOBAL_XdkEditionTarget ${gdk_edition})
+    endfunction()
+    function(add_executable target_name)
+        _add_executable(${ARGV})
+        set_property(TARGET ${target_name} PROPERTY VS_GLOBAL_XdkEditionTarget ${gdk_edition})
+    endfunction()
+endif()
+
 include(cmake/pix.cmake)
 add_pix_target(pix CACHE_PREFIX DXD)
 
@@ -143,11 +156,6 @@ install(
 if(TARGET_XBOX)
     # Deploy to the console instead of running on local machine.
     set_property(TARGET dxdispatch PROPERTY VS_SOLUTION_DEPLOY ON)
-
-    # This property is set on the gdk target, which dxdispatch links with, but it doesn't 
-    # get inherited automatically.
-    get_property(gdk_edition TARGET gdk PROPERTY VS_GLOBAL_XdkEditionTarget)
-    set_property(TARGET dxdispatch PROPERTY VS_GLOBAL_XdkEditionTarget ${gdk_edition})
 
     # No need for logos/assets; this is a developer-only app.
     target_sources(dxdispatch PRIVATE ${CMAKE_BINARY_DIR}/MicrosoftGame.config )
